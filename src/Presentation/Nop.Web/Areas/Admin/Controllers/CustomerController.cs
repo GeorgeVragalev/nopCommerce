@@ -572,7 +572,6 @@ namespace Nop.Web.Areas.Admin.Controllers
                     customer.AdminComment = model.AdminComment;
                     customer.IsTaxExempt = model.IsTaxExempt;
                     
-                    //welcome message
                     customer.WelcomeMessage = model.WelcomeMessage;
                     
                     //prevent deactivation of the last active administrator

@@ -873,7 +873,6 @@ namespace Nop.Web.Controllers
                     if (_customerSettings.FaxEnabled)
                         customer.Fax = model.Fax;
                     
-                    //welcome message
                     if (model.WelcomeMessage == null)
                     {
                         customer.WelcomeMessage = "Hello " + model.FirstName;
