@@ -872,7 +872,17 @@ namespace Nop.Web.Controllers
                         customer.Phone = model.Phone;
                     if (_customerSettings.FaxEnabled)
                         customer.Fax = model.Fax;
+                    
+                    if (model.WelcomeMessage == null)
+                    {
+                        customer.WelcomeMessage = "Hello " + model.FirstName;
+                    }
+                    else
+                    {
+                        customer.WelcomeMessage = model.WelcomeMessage;
+                    }
 
+                    
                     //save customer attributes
                     customer.CustomCustomerAttributesXML = customerAttributesXml;
                     await _customerService.UpdateCustomerAsync(customer);

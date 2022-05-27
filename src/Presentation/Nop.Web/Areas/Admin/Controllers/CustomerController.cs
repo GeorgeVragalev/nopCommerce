@@ -401,6 +401,9 @@ namespace Nop.Web.Areas.Admin.Controllers
                     customer.Fax = model.Fax;
                 customer.CustomCustomerAttributesXML = customerAttributesXml;
 
+                //welcome message
+                customer.WelcomeMessage = model.WelcomeMessage;
+                
                 await _customerService.InsertCustomerAsync(customer);
 
                 //newsletter subscriptions
@@ -527,7 +530,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             var customer = await _customerService.GetCustomerByIdAsync(model.Id);
             if (customer == null || customer.Deleted)
                 return RedirectToAction("List");
-
+ 
             //validate customer roles
             var allCustomerRoles = await _customerService.GetAllCustomerRolesAsync(true);
             var newCustomerRoles = new List<CustomerRole>();
@@ -568,7 +571,9 @@ namespace Nop.Web.Areas.Admin.Controllers
                 {
                     customer.AdminComment = model.AdminComment;
                     customer.IsTaxExempt = model.IsTaxExempt;
-
+                    
+                    customer.WelcomeMessage = model.WelcomeMessage;
+                    
                     //prevent deactivation of the last active administrator
                     if (!await _customerService.IsAdminAsync(customer) || model.Active || await SecondAdminAccountExistsAsync(customer))
                         customer.Active = model.Active;
@@ -646,6 +651,7 @@ namespace Nop.Web.Areas.Admin.Controllers
                     //custom customer attributes
                     customer.CustomCustomerAttributesXML = customerAttributesXml;
 
+                    customer.WelcomeMessage = model.WelcomeMessage;
                     //newsletter subscriptions
                     if (!string.IsNullOrEmpty(customer.Email))
                     {
