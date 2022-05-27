@@ -16,8 +16,12 @@
     @await Component.InvokeAsync(typeof(CustomerNavigationViewComponent), new {selectedTabId = CustomerNavigationEnum.Info})
 }
 
-<div class="title">
-    <strong>@Html.Raw(Model.WelcomeMessage)</strong>
+<div class="welcome-message">
+    <script>
+    {
+        displayBarNotification('@Html.Raw(Model.WelcomeMessage)', 'success', false)
+    }
+    </script>
 </div>
 
 <div class="page account-page customer-info-page">
