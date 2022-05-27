@@ -64,6 +64,7 @@ function displayPopupNotification(message, messagetype, modal) {
         width: 350
     });
 }
+
 function displayJoinedPopupNotifications(notes) {
     if (Object.keys(notes).length === 0) return;
 
@@ -91,6 +92,7 @@ function displayJoinedPopupNotifications(notes) {
         modal: true
     });
 }
+
 function displayPopupContentFromUrl(url, title, modal, width) {
     var isModal = (modal ? true : false);
     var targetWidth = (width ? width : 550);
@@ -106,6 +108,38 @@ function displayPopupContentFromUrl(url, title, modal, width) {
                 $(this).dialog('destroy').remove();
             }
         });
+}
+
+function displayModalPopup(message){
+  var container = $('#dialog-notifications-success');
+
+  var messages = typeof message === 'string' ? [message] : message;
+  if (messages.length === 0)
+    return;
+  
+  //we do not encode displayed message
+  var htmlcode = document.createElement('div');
+
+  //add close button for notification
+  var close = document.createElement('span');
+  close.classList.add('close');
+
+  for (var i = 0; i < messages.length; i++) {
+    var content = document.createElement('p');
+    content.classList.add('content');
+    content.innerHTML = messages[i]; 
+    
+    htmlcode.appendChild(content);
+  }
+
+  htmlcode.appendChild(close);
+  
+  container.html(htmlcode);
+
+  container.dialog({
+    modal: true,
+    width: 350
+  });
 }
 
 function displayBarNotification(message, messagetype, timeout) {
