@@ -19,7 +19,7 @@
 <div class="welcome-message">
     <script>
     {
-        displayBarNotification('@Html.Raw(Model.WelcomeMessage)', 'success', false)
+        displayModalPopup('@Html.Raw(JavaScriptEncoder.Default.Encode(Model.WelcomeMessage))')
     }
     </script>
 </div>
