@@ -44,6 +44,26 @@
         /// Stock: Low to High
         /// </summary>
         StockDesc = 17,
+      
+        /// <summary>
+        /// SKU: A to Z
+        /// </summary>
+        SkuAsc = 18,
 
+        /// <summary>
+        /// SKU: Z to A
+        /// </summary>
+        SkuDesc = 19,
+
+        /// <summary>
+        /// Published: Yes to No
+        /// </summary>
+        PublishedTrue = 20,
+
+        /// <summary>
+        /// Published: No to Yes
+        /// </summary>
+        PublishedFalse = 21
+        
     }
 }

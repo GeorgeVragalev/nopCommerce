@@ -781,6 +781,8 @@ namespace Nop.Web.Areas.Admin.Factories
                 categoryIds.AddRange(childCategoryIds);
             }
 
+            var sortId = searchModel.OrderBy;
+
             //get products
             var products = await _productService.SearchProductsAsync(showHidden: true,
                 categoryIds: categoryIds,
@@ -791,7 +793,8 @@ namespace Nop.Web.Areas.Admin.Factories
                 productType: searchModel.SearchProductTypeId > 0 ? (ProductType?)searchModel.SearchProductTypeId : null,
                 keywords: searchModel.SearchProductName,
                 pageIndex: searchModel.Page - 1, pageSize: searchModel.PageSize,
-                overridePublished: overridePublished);
+                overridePublished: overridePublished,
+                orderById: sortId);
 
             //prepare list model
             var model = await new ProductListModel().PrepareToGridAsync(searchModel, products, () =>

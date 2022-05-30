@@ -2305,7 +2305,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             {
                 model.SearchVendorId = currentVendor.Id;
             }
-
+            
             var categoryIds = new List<int> { model.SearchCategoryId };
             //include subcategories
             if (model.SearchIncludeSubCategories && model.SearchCategoryId > 0)
