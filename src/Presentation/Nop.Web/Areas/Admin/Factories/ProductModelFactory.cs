@@ -32,6 +32,9 @@ using Nop.Web.Areas.Admin.Models.Orders;
 using Nop.Web.Framework.Extensions;
 using Nop.Web.Framework.Factories;
 using Nop.Web.Framework.Models.Extensions;
+using Nop.Web.Models.Catalog;
+using ProductSpecificationAttributeModel = Nop.Web.Areas.Admin.Models.Catalog.ProductSpecificationAttributeModel;
+using ProductTagModel = Nop.Web.Areas.Admin.Models.Catalog.ProductTagModel;
 
 namespace Nop.Web.Areas.Admin.Factories
 {
@@ -701,6 +704,32 @@ namespace Nop.Web.Areas.Admin.Factories
 
             //prepare available warehouses
             await _baseAdminModelFactory.PrepareWarehousesAsync(searchModel.AvailableWarehouses);
+            
+            //prepare available sorting options
+            //set the order by position by default
+            // searchModel.OrderBy = command.OrderBy;
+            // command.OrderBy = (int)ProductSortingEnum.Position;
+            
+            var activeSortingOptionsIds = Enum.GetValues(typeof(ProductSortingEnum)).Cast<int>()
+                .Except(_catalogSettings.ProductSortingEnumDisabled).ToList();
+            
+            var orderedActiveSortingOptions = activeSortingOptionsIds
+                .Select(id => new { Id = id, Order = _catalogSettings.ProductSortingEnumDisplayOrder.TryGetValue(id, out var order) ? order : id })
+                .OrderBy(option => option.Order).ToList();
+            
+            searchModel.AllowProductSorting = true;
+            // command.OrderBy = searchModel.OrderBy ?? orderedActiveSortingOptions.FirstOrDefault().Id;
+
+            //prepare available model sorting options
+            foreach (var option in orderedActiveSortingOptions)
+            {
+                searchModel.AvailableSortOptions.Add(new SelectListItem
+                {
+                    Text = await _localizationService.GetLocalizedEnumAsync((ProductSortingEnum)option.Id),
+                    Value = option.Id.ToString(),
+                    // Selected = option.Id == command.OrderBy
+                });
+            }
 
             searchModel.HideStoresList = _catalogSettings.IgnoreStoreLimitations || searchModel.AvailableStores.SelectionIsNotPossible();
 

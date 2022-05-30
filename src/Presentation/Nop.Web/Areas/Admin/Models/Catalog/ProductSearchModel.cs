@@ -21,6 +21,7 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
             AvailableVendors = new List<SelectListItem>();
             AvailableProductTypes = new List<SelectListItem>();
             AvailablePublishedOptions = new List<SelectListItem>();
+            AvailableSortOptions = new List<SelectListItem>();
         }
 
         #endregion
@@ -76,6 +77,21 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         public IList<SelectListItem> AvailableProductTypes { get; set; }
 
         public IList<SelectListItem> AvailablePublishedOptions { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a order by
+        /// </summary>
+        public int? OrderBy { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether product sorting is allowed
+        /// </summary>
+        public bool AllowProductSorting { get; set; }
+
+        /// <summary>
+        /// Gets or sets available sort options
+        /// </summary>
+        public IList<SelectListItem> AvailableSortOptions { get; set; }
 
         #endregion
     }

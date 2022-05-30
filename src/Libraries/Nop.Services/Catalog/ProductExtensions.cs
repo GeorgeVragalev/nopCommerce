@@ -61,6 +61,8 @@ namespace Nop.Services.Catalog
                 ProductSortingEnum.PriceAsc => productsQuery.OrderBy(p => p.Price),
                 ProductSortingEnum.PriceDesc => productsQuery.OrderByDescending(p => p.Price),
                 ProductSortingEnum.CreatedOn => productsQuery.OrderByDescending(p => p.CreatedOnUtc),
+                ProductSortingEnum.StockAsc => productsQuery.OrderBy(p=>p.StockQuantity),
+                ProductSortingEnum.StockDesc => productsQuery.OrderByDescending(p=>p.StockQuantity),
                 ProductSortingEnum.Position when productsQuery is IOrderedQueryable => productsQuery,
                 _ => productsQuery.OrderBy(p => p.DisplayOrder).ThenBy(p => p.Id)
             };

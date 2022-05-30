@@ -133,7 +133,7 @@ function displayModalPopup(message){
   }
 
   htmlcode.appendChild(close);
-  
+
   container.html(htmlcode);
 
   container.dialog({

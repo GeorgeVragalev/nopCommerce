@@ -34,5 +34,16 @@
         /// Product creation date
         /// </summary>
         CreatedOn = 15,
+        
+        /// <summary>
+        /// Stock: Low to High
+        /// </summary>
+        StockAsc = 16,
+        
+        /// <summary>
+        /// Stock: Low to High
+        /// </summary>
+        StockDesc = 17,
+
     }
 }
