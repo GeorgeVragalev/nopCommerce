@@ -17226,6 +17226,9 @@
     <LocaleResource Name="Catalog.OrderBy">
         <Value>Sort by</Value>
     </LocaleResource>
+    <LocaleResource Name="Catalog.Order">
+        <Value>Order</Value>
+    </LocaleResource>
     <LocaleResource Name="Catalog.OrderBy.Label">
         <Value>Select product sort order</Value>
     </LocaleResource>

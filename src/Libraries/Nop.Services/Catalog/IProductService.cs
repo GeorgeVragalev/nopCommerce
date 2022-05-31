@@ -174,10 +174,9 @@ namespace Nop.Services.Catalog
             bool searchProductTags = false,
             int languageId = 0,
             IList<SpecificationAttributeOption> filteredSpecOptions = null,
-            ProductSortingEnum orderBy = ProductSortingEnum.Position,
+            ProductSortingEnum orderBy = ProductSortingEnum.PositionAsc,
             bool showHidden = false,
-            bool? overridePublished = null,
-            int? orderById = 0);
+            bool? overridePublished = null);
 
         /// <summary>
         /// Gets products by product attribute

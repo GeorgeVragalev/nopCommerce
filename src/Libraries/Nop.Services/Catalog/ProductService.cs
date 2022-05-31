@@ -896,10 +896,9 @@ namespace Nop.Services.Catalog
             bool searchProductTags = false,
             int languageId = 0,
             IList<SpecificationAttributeOption> filteredSpecOptions = null,
-            ProductSortingEnum orderBy = ProductSortingEnum.Position,
+            ProductSortingEnum orderBy = ProductSortingEnum.PositionAsc,
             bool showHidden = false,
-            bool? overridePublished = null,
-            int? orderById = 0)
+            bool? overridePublished = null)
         {
             //some databases don't support int.MaxValue
             if (pageSize == int.MaxValue)
@@ -1145,49 +1144,7 @@ namespace Nop.Services.Catalog
             //get active sorting options
             var activeSortingOptionsIds = Enum.GetValues(typeof(ProductSortingEnum)).Cast<int>()
                 .Except(_catalogSettings.ProductSortingEnumDisabled).ToList();
-            
-            switch (orderById)
-            {
-                case 0:
-                    orderBy = ProductSortingEnum.Position;
-                    break;
-                case 5:
-                    orderBy = ProductSortingEnum.NameAsc;
-                    break;
-                case 6:
-                    orderBy = ProductSortingEnum.NameDesc;
-                    break;
-                case 10:
-                    orderBy = ProductSortingEnum.PriceAsc;
-                    break;
-                case 11:
-                    orderBy = ProductSortingEnum.PriceDesc;
-                    break;
-                case 15:
-                    orderBy = ProductSortingEnum.CreatedOn;
-                    break;
-                case 16:
-                    orderBy = ProductSortingEnum.StockAsc;
-                    break;
-                case 17:
-                    orderBy = ProductSortingEnum.StockDesc;
-                    break;
-                case 18:
-                    orderBy = ProductSortingEnum.SkuAsc;
-                    break;
-                case 19:
-                    orderBy = ProductSortingEnum.SkuDesc;
-                    break;
-                case 20:
-                    orderBy = ProductSortingEnum.PublishedTrue;
-                    break;
-                case 21:
-                    orderBy = ProductSortingEnum.PublishedFalse;
-                    break;
-                default: 
-                    orderBy = ProductSortingEnum.Position;
-                    break;
-            }
+
 
             return await productsQuery
                 .OrderBy(_localizedPropertyRepository, await _workContext.GetWorkingLanguageAsync(), orderBy)

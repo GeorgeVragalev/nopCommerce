@@ -192,27 +192,18 @@
                             </div>
                         </div>
                     </div>
-                    @if (true)
+                    @if (Model.AllowProductSorting)
                     {
                         <div class="product-sorting">
                             <span>@T("Catalog.OrderBy")</span>
-                            @Html.DropDownList("products-orderby", Model.AvailableSortOptions, new {aria_label = T("Catalog.OrderBy.Label")})
+                            <nop-select asp-for="OrderBy" asp-items="Model.AvailableSortOptions"/>
                         </div>
-                        <script asp-location="Footer">
-                            $(document).ready(function () {
-                                var $orderByEl = $('#products-orderby');
-                                $orderByEl.on('change', function () {
-                                    CatalogProducts.getProducts();
-                                });
-
-                                $(CatalogProducts).on('before', function (e) {
-                                    e.payload.urlBuilder
-                                        .addParameter('orderby', $orderByEl.val());
-                                });
-                            });
-                        </script>
+                        
+                        <div class="product-sorting">
+                            <span>@T("Catalog.Order")</span>
+                            <nop-select asp-for="SortDirection" asp-items="Model.SortingOptions"/>
+                        </div>
                     }
-
                 </div>
             </div>
             <div class="row">
@@ -249,7 +240,9 @@
                 new FilterParameter(nameof(Model.SearchVendorId)),
                 new FilterParameter(nameof(Model.SearchProductTypeId)),
                 new FilterParameter(nameof(Model.SearchPublishedId)),
-                new FilterParameter(nameof(Model.SearchOrderById))
+                new FilterParameter(nameof(Model.SearchOrderById)),
+                new FilterParameter(nameof(Model.OrderBy)),
+                new FilterParameter(nameof(Model.SortDirection)),
             },
             ColumnCollection = new List<ColumnProperty>
             {

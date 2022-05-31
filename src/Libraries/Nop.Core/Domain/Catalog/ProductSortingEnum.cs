@@ -8,7 +8,14 @@
         /// <summary>
         /// Position (display order)
         /// </summary>
-        Position = 0,
+        PositionAsc = 0,
+        
+        /// <summary>
+        /// Position (display order)
+        /// </summary>
+        PositionDesc = 1,
+        
+        //todo add support for PositionDesciding
 
         /// <summary>
         /// Name: A to Z

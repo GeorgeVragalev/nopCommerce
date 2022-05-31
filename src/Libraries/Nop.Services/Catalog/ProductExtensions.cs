@@ -19,7 +19,8 @@ namespace Nop.Services.Catalog
         /// If <paramref name="orderBy"/> is set to <c>Position</c> and passed <paramref name="productsQuery"/> is
         /// ordered sorting rule will be skipped
         /// </remarks>
-        public static IQueryable<Product> OrderBy(this IQueryable<Product> productsQuery, IRepository<LocalizedProperty> localizedPropertyRepository, Language currentLanguage, ProductSortingEnum orderBy)
+        public static IQueryable<Product> OrderBy(this IQueryable<Product> productsQuery, IRepository<LocalizedProperty> localizedPropertyRepository, 
+            Language currentLanguage, ProductSortingEnum orderBy)
         {
             if (orderBy == ProductSortingEnum.NameAsc || orderBy == ProductSortingEnum.NameDesc)
             {
@@ -64,9 +65,14 @@ namespace Nop.Services.Catalog
                 ProductSortingEnum.StockDesc => productsQuery.OrderByDescending(p => p.StockQuantity),
                 ProductSortingEnum.SkuAsc => productsQuery.OrderBy(p => p.Sku),
                 ProductSortingEnum.SkuDesc => productsQuery.OrderByDescending(p => p.Sku),
+                ProductSortingEnum.PublishedTrue => productsQuery.OrderBy(p => p.Published),
+                ProductSortingEnum.PublishedFalse => productsQuery.OrderByDescending(p => p.Published),
                 ProductSortingEnum.CreatedOn => productsQuery.OrderByDescending(p => p.CreatedOnUtc),
-                ProductSortingEnum.Position when productsQuery is IOrderedQueryable => productsQuery,
-                _ => productsQuery.OrderBy(p => p.DisplayOrder).ThenBy(p => p.Id)
+                ProductSortingEnum.PositionAsc  => productsQuery.OrderBy(p => p.Id),
+                ProductSortingEnum.PositionDesc  => productsQuery.OrderByDescending(p => p.Id),
+                //
+                // ProductSortingEnum.Position when productsQuery is IOrderedQueryable => productsQuery,
+                // _ => productsQuery.OrderBy(p => p.DisplayOrder).ThenBy(p => p.Id)
             };
         }
     }

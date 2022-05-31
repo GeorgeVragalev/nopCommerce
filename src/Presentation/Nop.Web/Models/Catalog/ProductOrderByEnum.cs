@@ -8,17 +8,27 @@ public enum ProductOrderByEnum
     Position = 0,
 
     /// <summary>
-    /// Name: A to Z
+    /// Name
     /// </summary>
-    NameAsc = 5,
+    Name = 5,
 
     /// <summary>
-    /// Name: Z to A
+    /// Price
     /// </summary>
-    NameDesc = 6,
+    Price = 10,
 
     /// <summary>
-    /// Price: Low to High
+    /// Stock
     /// </summary>
-    PriceAsc = 10,
+    Stock = 16,
+
+    /// <summary>
+    /// SKU
+    /// </summary>
+    Sku = 18,
+
+    /// <summary>
+    /// Published
+    /// </summary>
+    Published = 20,
 }

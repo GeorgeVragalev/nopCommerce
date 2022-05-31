@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Web.Framework.Mvc.ModelBinding;
 using Nop.Web.Framework.Models;
+using Nop.Web.Models.Catalog;
+using Nop.Web.Models.Common;
 
 namespace Nop.Web.Areas.Admin.Models.Catalog
 {
@@ -85,17 +87,28 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         /// <summary>
         /// Gets or sets a order by
         /// </summary>
-        public int? OrderBy { get; set; }
+        public ProductOrderByEnum OrderBy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the direction if order by
+        /// </summary>
+        public SortDirectionEnum SortDirection { get; set; }
+        /// <summary>
+        /// Gets or sets available sort options
+        /// </summary>
+        public IList<SelectListItem> AvailableSortOptions { get; set; }
+        
+        /// <summary>
+        /// Ascending Descending
+        /// </summary>
+        public IList<SelectListItem> SortingOptions { get; set; }
         
         /// <summary>
         /// Gets or sets a value indicating whether product sorting is allowed
         /// </summary>
         public bool AllowProductSorting { get; set; }
 
-        /// <summary>
-        /// Gets or sets available sort options
-        /// </summary>
-        public IList<SelectListItem> AvailableSortOptions { get; set; }
+     
 
         #endregion
     }
