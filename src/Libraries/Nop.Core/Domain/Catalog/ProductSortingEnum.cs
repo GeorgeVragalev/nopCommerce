@@ -15,8 +15,6 @@
         /// </summary>
         PositionDesc = 1,
         
-        //todo add support for PositionDesciding
-
         /// <summary>
         /// Name: A to Z
         /// </summary>

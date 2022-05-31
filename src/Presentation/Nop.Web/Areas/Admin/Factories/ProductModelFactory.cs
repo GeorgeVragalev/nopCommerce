@@ -740,12 +740,6 @@ namespace Nop.Web.Areas.Admin.Factories
             await _baseAdminModelFactory.PrepareWarehousesAsync(searchModel.AvailableWarehouses);
 
             //prepare available sorting options
-            //set the order by position by default
-            // searchModel.OrderBy = command.OrderBy;
-            // command.OrderBy = (int)ProductSortingEnum.Position;
-
-            //todo, populate dropdown values
-
             searchModel.AllowProductSorting = true;
 
             searchModel.OrderBy = ProductOrderByEnum.Position;

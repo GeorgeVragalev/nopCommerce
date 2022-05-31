@@ -69,10 +69,7 @@ namespace Nop.Services.Catalog
                 ProductSortingEnum.PublishedFalse => productsQuery.OrderByDescending(p => p.Published),
                 ProductSortingEnum.CreatedOn => productsQuery.OrderByDescending(p => p.CreatedOnUtc),
                 ProductSortingEnum.PositionAsc  => productsQuery.OrderBy(p => p.Id),
-                ProductSortingEnum.PositionDesc  => productsQuery.OrderByDescending(p => p.Id),
-                //
-                // ProductSortingEnum.Position when productsQuery is IOrderedQueryable => productsQuery,
-                // _ => productsQuery.OrderBy(p => p.DisplayOrder).ThenBy(p => p.Id)
+                ProductSortingEnum.PositionDesc  => productsQuery.OrderByDescending(p => p.Id)
             };
         }
     }
