@@ -23,7 +23,6 @@ namespace Nop.Web.Areas.Admin.Infrastructure.Mapper.Extensions
         private static TDestination Map<TDestination>(this object source)
         {
             //use AutoMapper for mapping objects
-            
             return AutoMapperConfiguration.Mapper.Map<TDestination>(source);
         }
 
