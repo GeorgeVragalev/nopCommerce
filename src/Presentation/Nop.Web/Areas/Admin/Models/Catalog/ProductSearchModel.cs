@@ -87,11 +87,13 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         /// <summary>
         /// Gets or sets a order by
         /// </summary>
+        [NopResourceDisplayName("Admin.Catalog.Products.List.OrderBy")]
         public ProductOrderByEnum OrderBy { get; set; }
 
         /// <summary>
         /// Gets or sets the direction if order by
         /// </summary>
+        [NopResourceDisplayName("Admin.Catalog.Products.List.SortDirection")]
         public SortDirectionEnum SortDirection { get; set; }
         /// <summary>
         /// Gets or sets available sort options

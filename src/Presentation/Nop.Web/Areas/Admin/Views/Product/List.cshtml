@@ -194,17 +194,25 @@
                     </div>
                     @if (Model.AllowProductSorting)
                     {
-                        <div class="product-sorting">
-                            <span>@T("Catalog.OrderBy")</span>
-                            <nop-select asp-for="OrderBy" asp-items="Model.AvailableSortOptions"/>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <nop-label asp-for="OrderBy"/>
+                            </div>
+                            <div class="col-md-8">
+                                <nop-select asp-for="OrderBy" asp-items="Model.AvailableSortOptions"/>
+                            </div>
                         </div>
-                        
-                        <div class="product-sorting">
-                            <span>@T("Catalog.Order")</span>
-                            <nop-select asp-for="SortDirection" asp-items="Model.SortingOptions"/>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <nop-label asp-for="SortDirection"/>
+                            </div>
+                            <div class="col-md-8">
+                                <nop-select asp-for="SortDirection" asp-items="Model.SortingOptions"/>
+                            </div>
                         </div>
                     }
                 </div>
+
             </div>
             <div class="row">
                 <div class="text-center col-12">
