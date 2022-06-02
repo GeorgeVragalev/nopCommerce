@@ -738,6 +738,27 @@ namespace Nop.Web.Areas.Admin.Controllers
         #region Methods
 
         #region Product list / create / edit / delete
+        
+        public virtual async Task<IActionResult> ViewById(int id)
+        {
+            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageProducts))
+                return AccessDeniedView();
+
+            //try to get a product with the specified id
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null || product.Deleted)
+                return RedirectToAction("List");
+
+            //a vendor should have access only to his products
+            var currentVendor = await _workContext.GetCurrentVendorAsync();
+            if (currentVendor != null && product.VendorId != currentVendor.Id)
+                return RedirectToAction("List");
+
+            //prepare model
+            var model = await _productModelFactory.PrepareProductModelAsync(null, product);
+
+            return Json(model);
+        }
 
         public virtual IActionResult Index()
         {

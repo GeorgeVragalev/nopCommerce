@@ -809,14 +809,7 @@ namespace Nop.Web.Areas.Admin.Factories
                 categoryIds.AddRange(childCategoryIds);
             }
 
-            
-            var sortId = 11;
-            var direction = searchModel.SortDirection;
-
-            // todo Here to MAP
             var orderBy = ConvertEnum(searchModel.OrderBy, searchModel.SortDirection);
-            
-            // orderBy = ProductSortingEnum.PriceDesc;
             
             //get products
             var products = await _productService.SearchProductsAsync(showHidden: true,

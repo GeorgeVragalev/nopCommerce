@@ -298,11 +298,24 @@
                     Width = "80",
                     ClassName = NopColumnClassDefaults.Button,
                     Render = new RenderButtonEdit(new DataUrl("Edit"))
+                },
+                new ColumnProperty(nameof(ProductModel.Id))
+                {
+                    Title = T("Admin.Common.View").Text,
+                    Width = "80",
+                    ClassName = NopColumnClassDefaults.Button,
+                    Render = new RenderButtonCustom("btn btn-info view-btn", "View")
+                    {
+                        OnClickFunctionName = "viewContentById"
+                    }
                 }
             }
         })
-
+        
+        @await Html.PartialAsync("_ProductOverview")
+        
         <script>
+                 
                             function renderColumnPrice(data, type, row, meta) {
                                 return (row.ProductTypeId != @((int) ProductType.GroupedProduct) ) ? data : null;
                             }
