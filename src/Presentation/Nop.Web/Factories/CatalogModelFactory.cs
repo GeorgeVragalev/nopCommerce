@@ -1892,7 +1892,7 @@ namespace Nop.Web.Factories
         {
             //set the order by position by default
             model.OrderBy = command.OrderBy;
-            command.OrderBy = (int)ProductSortingEnum.Position;
+            command.OrderBy = (int)ProductSortingEnum.PositionAsc;
 
             //ensure that product sorting is enabled
             if (!_catalogSettings.AllowProductSorting)

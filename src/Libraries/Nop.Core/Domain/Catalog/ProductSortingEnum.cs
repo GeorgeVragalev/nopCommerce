@@ -8,8 +8,13 @@
         /// <summary>
         /// Position (display order)
         /// </summary>
-        Position = 0,
-
+        PositionAsc = 0,
+        
+        /// <summary>
+        /// Position (display order)
+        /// </summary>
+        PositionDesc = 1,
+        
         /// <summary>
         /// Name: A to Z
         /// </summary>
@@ -34,5 +39,36 @@
         /// Product creation date
         /// </summary>
         CreatedOn = 15,
+        
+        /// <summary>
+        /// Stock: Low to High
+        /// </summary>
+        StockAsc = 16,
+        
+        /// <summary>
+        /// Stock: Low to High
+        /// </summary>
+        StockDesc = 17,
+      
+        /// <summary>
+        /// SKU: A to Z
+        /// </summary>
+        SkuAsc = 18,
+
+        /// <summary>
+        /// SKU: Z to A
+        /// </summary>
+        SkuDesc = 19,
+
+        /// <summary>
+        /// Published: Yes to No
+        /// </summary>
+        PublishedTrue = 20,
+
+        /// <summary>
+        /// Published: No to Yes
+        /// </summary>
+        PublishedFalse = 21
+        
     }
 }

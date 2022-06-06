@@ -739,6 +739,52 @@ namespace Nop.Web.Areas.Admin.Controllers
 
         #region Product list / create / edit / delete
 
+        public virtual async Task<IActionResult> Overview(int id)
+        {
+            if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageProducts))
+                return AccessDeniedView();
+
+            //try to get a product with the specified id
+            var product = await _productService.GetProductByIdAsync(id);
+            if (product == null || product.Deleted)
+                return RedirectToAction("List");
+
+            //a vendor should have access only to his products
+            var currentVendor = await _workContext.GetCurrentVendorAsync();
+            if (currentVendor != null && product.VendorId != currentVendor.Id)
+                return RedirectToAction("List");
+
+            //prepare model
+            var model = await _productModelFactory.PrepareProductModelAsync(null, product);
+
+            //try to get a product picture with the specified id
+            var productPicture = await _productService.GetProductPictureByIdAsync(model.Id);
+
+            if (productPicture == null)
+            {
+                model.PictureThumbnailUrl = (await _pictureService.GetPictureUrlAsync(null)).Url;
+                return Json(model);
+            }
+            
+            //fill in model values from the entity
+            var productPictureModel = productPicture.ToModel<ProductPictureModel>();
+
+            //fill in additional values (not existing in the entity)
+            var picture = (await _pictureService.GetPictureByIdAsync(productPicture.PictureId));
+            
+            if (picture == null)
+            {
+                throw new Exception("Picture cannot be loaded");
+            }
+            
+            productPictureModel.PictureUrl = (await _pictureService.GetPictureUrlAsync(picture)).Url;
+            productPictureModel.OverrideAltAttribute = picture.AltAttribute;
+            productPictureModel.OverrideTitleAttribute = picture.TitleAttribute;
+            model.PictureThumbnailUrl = productPictureModel.PictureUrl;
+            
+            return Json(model);
+        }
+
         public virtual IActionResult Index()
         {
             return RedirectToAction("List");
@@ -2305,7 +2351,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             {
                 model.SearchVendorId = currentVendor.Id;
             }
-
+            
             var categoryIds = new List<int> { model.SearchCategoryId };
             //include subcategories
             if (model.SearchIncludeSubCategories && model.SearchCategoryId > 0)

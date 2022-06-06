@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+<div id="myModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Product overview</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <img id="image" src="" alt="Product image">
+                </div>
+                <div>
+                    <label>@T("Admin.Catalog.Products.Fields.Name").Text</label>
+                    <input id="title" class="text-left" type="text" disabled="disabled" name="title" value=""/>
+                </div>
+                <div>
+                    <label>@T("Admin.Catalog.Products.Fields.Sku").Text</label>
+                    <input id="sku" class="text-left" type="text" disabled="disabled" name="sku" value=""/>
+                </div>
+                <div>
+                    <label>@T("Admin.Catalog.Products.Fields.Price").Text</label>
+                    <input id="price" class="text-left" type="text" disabled="disabled" name="price" value=""/>
+                </div>
+                <div>
+                    <label>@T("Admin.Catalog.Products.Fields.StockQuantity").Text</label>
+                    <input id="stock" class="text-left" type="text" disabled="disabled" name="stock" value=""/>
+                </div>
+
+                <button class="btn btn-info edit-btn" product-id="32" onclick="redirectToEdit(this)">
+                    @T("Admin.Common.Edit").Text
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function redirectToEdit(obj) {
+        var productId = $(obj).attr('product-id');
+        var urlPattern = "@Url.Action("Edit", "Product", new {id = "6666666"})";
+        window.location.href = urlPattern.replace('6666666', productId);
+    }
+
+     function viewContentById(id) {
+        $.getJSON('/Admin/Product/Overview/'+id, function (data){
+           $("#myModal .modal-body #title").val( data.Name );
+           $("#myModal .modal-body #sku").val( data.Sku );
+           $("#myModal .modal-body #price").val( data.Price );
+           $("#myModal .modal-body #stock").val( data.StockQuantity );
+           $("#myModal .modal-body #image").attr('src', data.PictureThumbnailUrl);
+           $("#myModal .edit-btn").attr('product-id', data.Id);
+           $("#myModal").modal('show');
+        });
+    }      
+</script>

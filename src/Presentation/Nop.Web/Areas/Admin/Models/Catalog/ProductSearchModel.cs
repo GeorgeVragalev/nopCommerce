@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Nop.Web.Framework.Mvc.ModelBinding;
 using Nop.Web.Framework.Models;
+using Nop.Web.Models.Catalog;
+using Nop.Web.Models.Common;
 
 namespace Nop.Web.Areas.Admin.Models.Catalog
 {
@@ -21,6 +23,7 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
             AvailableVendors = new List<SelectListItem>();
             AvailableProductTypes = new List<SelectListItem>();
             AvailablePublishedOptions = new List<SelectListItem>();
+            AvailableSortOptions = new List<SelectListItem>();
         }
 
         #endregion
@@ -54,6 +57,9 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.List.SearchPublished")]
         public int SearchPublishedId { get; set; }
 
+        [NopResourceDisplayName("Admin.Catalog.Products.List.OrderById")]
+        public int SearchOrderById { get; set; }
+
         [NopResourceDisplayName("Admin.Catalog.Products.List.GoDirectlyToSku")]
         public string GoDirectlyToSku { get; set; }
 
@@ -76,6 +82,34 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         public IList<SelectListItem> AvailableProductTypes { get; set; }
 
         public IList<SelectListItem> AvailablePublishedOptions { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a order by
+        /// </summary>
+        [NopResourceDisplayName("Admin.Catalog.Products.List.OrderBy")]
+        public ProductOrderByEnum OrderBy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the direction if order by
+        /// </summary>
+        [NopResourceDisplayName("Admin.Catalog.Products.List.SortDirection")]
+        public SortDirectionEnum SortDirection { get; set; }
+        /// <summary>
+        /// Gets or sets available sort options
+        /// </summary>
+        public IList<SelectListItem> AvailableSortOptions { get; set; }
+        
+        /// <summary>
+        /// Ascending Descending
+        /// </summary>
+        public IList<SelectListItem> SortingOptions { get; set; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether product sorting is allowed
+        /// </summary>
+        public bool AllowProductSorting { get; set; }
+
+     
 
         #endregion
     }

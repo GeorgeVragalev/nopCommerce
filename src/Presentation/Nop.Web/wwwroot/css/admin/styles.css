@@ -743,6 +743,53 @@ i.false-icon {
   font-size: 14px;
 }
 
+#myModal label {
+  display: inline-block;
+  width: 150px;
+  text-align: right;
+}
+
+#myModal img {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+}
+
+#myModal .modal-body input {
+  align-self: center;
+  padding: 5px 10px;
+  width: 250px;
+  alignment: left;
+  border: none;
+  background-color: transparent;
+}
+
+#myModal :before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+}
+
+#myModal .modal-dialog {
+  display: inline-block;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#myModal .modal-content {
+  padding: 20px 20px 20px 20px;
+  -webkit-animation-name: modal-animation;
+  -webkit-animation-duration: 0.5s;
+  animation-name: modal-animation;
+  animation-duration: 0.5s;
+}
+
 /*override font-awesome styles*/
 .fa, .far, .fas {
   padding-right: 5px;

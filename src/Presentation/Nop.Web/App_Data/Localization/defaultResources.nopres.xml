@@ -3703,6 +3703,9 @@
             will be updated.
         </Value>
     </LocaleResource>
+    <LocaleResource Name="Admin.Catalog.Products.List.OrderBy">
+        <Value>Order by</Value>
+    </LocaleResource>
     <LocaleResource Name="Admin.Catalog.Products.List.SearchCategory">
         <Value>Category</Value>
     </LocaleResource>
@@ -3765,6 +3768,9 @@
     </LocaleResource>
     <LocaleResource Name="Admin.Catalog.Products.List.SearchWarehouse.Hint">
         <Value>Search by a specific warehouse.</Value>
+    </LocaleResource>
+    <LocaleResource Name="Admin.Catalog.Products.List.SortDirection">
+        <Value>Sort</Value>
     </LocaleResource>
     <LocaleResource Name="Admin.Catalog.Products.Multimedia">
         <Value>Multimedia</Value>
@@ -17225,6 +17231,9 @@
     </LocaleResource>
     <LocaleResource Name="Catalog.OrderBy">
         <Value>Sort by</Value>
+    </LocaleResource>
+    <LocaleResource Name="Catalog.Order">
+        <Value>Order</Value>
     </LocaleResource>
     <LocaleResource Name="Catalog.OrderBy.Label">
         <Value>Select product sort order</Value>
