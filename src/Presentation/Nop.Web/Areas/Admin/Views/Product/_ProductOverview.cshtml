@@ -36,7 +36,7 @@
 
 <script>
      function viewContentById(id) {
-        $.getJSON('/Admin/Product/ViewById/'+id, function (data){
+        $.getJSON('/Admin/Product/Overview/'+id, function (data){
            
            $("#myModal .modal-body #title").val( data.Name );
            $("#myModal .modal-body #sku").val( data.Sku );

@@ -739,7 +739,7 @@ namespace Nop.Web.Areas.Admin.Controllers
 
         #region Product list / create / edit / delete
 
-        public virtual async Task<IActionResult> ViewById(int id)
+        public virtual async Task<IActionResult> Overview(int id)
         {
             if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageProducts))
                 return AccessDeniedView();
@@ -758,24 +758,28 @@ namespace Nop.Web.Areas.Admin.Controllers
             var model = await _productModelFactory.PrepareProductModelAsync(null, product);
 
             //try to get a product picture with the specified id
-            var productPicture = await _productService.GetProductPictureByIdAsync(model.Id)
-                                 ?? throw new ArgumentException("No product picture found with the specified id");
+            var productPicture = await _productService.GetProductPictureByIdAsync(model.Id);
 
+            if (productPicture == null)
+            {
+                model.PictureThumbnailUrl = (await _pictureService.GetPictureUrlAsync(null)).Url;
+                return Json(model);
+            }
+            
             //fill in model values from the entity
             var productPictureModel = productPicture.ToModel<ProductPictureModel>();
 
             //fill in additional values (not existing in the entity)
-            var picture = (await _pictureService.GetPictureByIdAsync(productPicture.PictureId))
-                          ?? throw new Exception("Picture cannot be loaded");
-
+            var picture = (await _pictureService.GetPictureByIdAsync(productPicture.PictureId));
+            
+            if (picture == null)
+            {
+                throw new Exception("Picture cannot be loaded");
+            }
+            
             productPictureModel.PictureUrl = (await _pictureService.GetPictureUrlAsync(picture)).Url;
-
             productPictureModel.OverrideAltAttribute = picture.AltAttribute;
             productPictureModel.OverrideTitleAttribute = picture.TitleAttribute;
-
-            var productPictures =
-                (await _productService.GetProductPicturesByProductIdAsync(product.Id));
-
             model.PictureThumbnailUrl = productPictureModel.PictureUrl;
             
             return Json(model);

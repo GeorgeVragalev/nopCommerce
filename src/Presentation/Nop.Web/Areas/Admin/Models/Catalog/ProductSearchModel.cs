@@ -58,7 +58,6 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         public int SearchPublishedId { get; set; }
 
         [NopResourceDisplayName("Admin.Catalog.Products.List.OrderById")]
-        
         public int SearchOrderById { get; set; }
 
         [NopResourceDisplayName("Admin.Catalog.Products.List.GoDirectlyToSku")]
