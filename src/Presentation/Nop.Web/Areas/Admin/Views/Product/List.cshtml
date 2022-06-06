@@ -312,8 +312,6 @@
             }
         })
         
-        @await Html.PartialAsync("_ProductOverview")
-        
         <script>
                  
                             function renderColumnPrice(data, type, row, meta) {
@@ -463,3 +461,5 @@
         });
     </script>
 <nop-alert asp-alert-id="exportExcelSelected"/>
+
+@await Html.PartialAsync("_ProductOverview")
