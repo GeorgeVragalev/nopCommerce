@@ -29,6 +29,11 @@ namespace Nop.Core.Domain.Messages
         public string Body { get; set; }
 
         /// <summary>
+        /// Gets or sets the ReplyTo property (email address)
+        /// </summary>
+        public string ReplyTo { get; set; }
+        
+        /// <summary>
         /// Gets or sets a value indicating whether the template is active
         /// </summary>
         public bool IsActive { get; set; }

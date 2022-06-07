@@ -174,6 +174,7 @@ namespace Nop.Web.Areas.Admin.Factories
                     locale.Subject = await _localizationService.GetLocalizedAsync(messageTemplate, entity => entity.Subject, languageId, false, false);
                     locale.Body = await _localizationService.GetLocalizedAsync(messageTemplate, entity => entity.Body, languageId, false, false);
                     locale.EmailAccountId = await _localizationService.GetLocalizedAsync(messageTemplate, entity => entity.EmailAccountId, languageId, false, false);
+                    locale.ReplyTo = await _localizationService.GetLocalizedAsync(messageTemplate, entity => entity.ReplyTo, languageId, false, false);
 
                     //prepare available email accounts
                     await _baseAdminModelFactory.PrepareEmailAccountsAsync(locale.AvailableEmailAccounts,
@@ -184,9 +185,10 @@ namespace Nop.Web.Areas.Admin.Factories
                     {
                         emailAccountListItem.Selected = true;
                     }
-
                 };
             }
+            
+            model.ReplyTo = "admin@YourStore.com"; 
 
             model.SendImmediately = !model.DelayBeforeSend.HasValue;
             model.HasAttachedDownload = model.AttachedDownloadId > 0;
