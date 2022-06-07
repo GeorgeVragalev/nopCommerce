@@ -80,12 +80,18 @@ namespace Nop.Web.Areas.Admin.Controllers
 
                 await _localizedEntityService.SaveLocalizedValueAsync(mt,
                     x => x.Body,
-                    localized.Body,
+                    localized.
+                        Body,
                     localized.LanguageId);
 
                 await _localizedEntityService.SaveLocalizedValueAsync(mt,
                     x => x.EmailAccountId,
                     localized.EmailAccountId,
+                    localized.LanguageId);
+                
+                await _localizedEntityService.SaveLocalizedValueAsync(mt,
+                    x => x.ReplyTo,
+                    localized.ReplyTo,
                     localized.LanguageId);
             }
         }
@@ -141,7 +147,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageMessageTemplates))
                 return await AccessDeniedDataTablesJson();
 
-            //prepare model
+            //prepare model 
             var model = await _messageTemplateModelFactory.PrepareMessageTemplateListModelAsync(searchModel);
 
             return Json(model);

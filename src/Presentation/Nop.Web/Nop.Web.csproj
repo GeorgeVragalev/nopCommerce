@@ -58,6 +58,7 @@
 
   <ItemGroup>
     <Folder Include="Plugins\" />
+    <Folder Include="wwwroot\lib_npm\splide" />
   </ItemGroup>
 
   <ItemGroup>

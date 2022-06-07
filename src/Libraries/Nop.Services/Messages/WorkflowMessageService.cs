@@ -2577,7 +2577,7 @@ namespace Nop.Services.Messages
                 FromName = !string.IsNullOrEmpty(fromName) ? fromName : emailAccount.DisplayName,
                 To = toEmailAddress,
                 ToName = toName,
-                ReplyTo = replyToEmailAddress,
+                ReplyTo = !string.IsNullOrEmpty(replyToEmailAddress) ? replyToEmailAddress : messageTemplate.ReplyTo,
                 ReplyToName = replyToName,
                 CC = string.Empty,
                 Bcc = bcc,

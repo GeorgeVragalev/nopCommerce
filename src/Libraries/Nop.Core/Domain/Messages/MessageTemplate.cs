@@ -29,6 +29,11 @@ namespace Nop.Core.Domain.Messages
         public string Body { get; set; }
 
         /// <summary>
+        /// Gets or sets the ReplyTo property (email address)
+        /// </summary>
+        public string ReplyTo { get; set; }
+        
+        /// <summary>
         /// Gets or sets a value indicating whether the template is active
         /// </summary>
         public bool IsActive { get; set; }
@@ -39,7 +44,7 @@ namespace Nop.Core.Domain.Messages
         public int? DelayBeforeSend { get; set; }
 
         /// <summary>
-        /// Gets or sets the period of message delay 
+        /// Gets or sets the period of message delay
         /// </summary>
         public int DelayPeriodId { get; set; }
 

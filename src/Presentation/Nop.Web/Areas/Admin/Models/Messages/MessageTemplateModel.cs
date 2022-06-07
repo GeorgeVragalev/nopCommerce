@@ -41,6 +41,9 @@ namespace Nop.Web.Areas.Admin.Models.Messages
         [NopResourceDisplayName("Admin.ContentManagement.MessageTemplates.Fields.Body")]
         public string Body { get; set; }
 
+        [NopResourceDisplayName("Admin.ContentManagement.MessageTemplates.Fields.ReplyTo")]
+        public string ReplyTo { get; set; }
+        
         [NopResourceDisplayName("Admin.ContentManagement.MessageTemplates.Fields.IsActive")]
         public bool IsActive { get; set; }
 
@@ -98,6 +101,9 @@ namespace Nop.Web.Areas.Admin.Models.Messages
 
         [NopResourceDisplayName("Admin.ContentManagement.MessageTemplates.Fields.EmailAccount")]
         public int EmailAccountId { get; set; }
+        
+        [NopResourceDisplayName("Admin.ContentManagement.MessageTemplates.Fields.ReplyTo")]
+        public string ReplyTo { get; set; }
         public IList<SelectListItem> AvailableEmailAccounts { get; set; }
     }
 }

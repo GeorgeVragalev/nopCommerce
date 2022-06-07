@@ -174,18 +174,23 @@ namespace Nop.Web.Areas.Admin.Factories
                     locale.Subject = await _localizationService.GetLocalizedAsync(messageTemplate, entity => entity.Subject, languageId, false, false);
                     locale.Body = await _localizationService.GetLocalizedAsync(messageTemplate, entity => entity.Body, languageId, false, false);
                     locale.EmailAccountId = await _localizationService.GetLocalizedAsync(messageTemplate, entity => entity.EmailAccountId, languageId, false, false);
+                    locale.ReplyTo = await _localizationService.GetLocalizedAsync(messageTemplate, entity => entity.ReplyTo, languageId, false, false);
 
                     //prepare available email accounts
                     await _baseAdminModelFactory.PrepareEmailAccountsAsync(locale.AvailableEmailAccounts,
-                        defaultItemText: await _localizationService.GetResourceAsync("Admin.ContentManagement.MessageTemplates.Fields.EmailAccount.Standard"));
+                        defaultItemText: await _localizationService.GetResourceAsync("Admin.ContentManagement.MessageTemplates.Fields.EmailAccount.Standard")); 
 
                     //PrepareEmailAccounts only gets available accounts, we need to set the item as selected manually
                     if (locale.AvailableEmailAccounts?.FirstOrDefault(x => x.Value == locale.EmailAccountId.ToString()) is SelectListItem emailAccountListItem)
                     {
                         emailAccountListItem.Selected = true;
                     }
-
                 };
+            }
+
+            if (messageTemplate?.ReplyTo!=null)
+            {
+                model.ReplyTo = messageTemplate.ReplyTo;
             }
 
             model.SendImmediately = !model.DelayBeforeSend.HasValue;
