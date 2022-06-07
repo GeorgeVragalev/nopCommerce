@@ -612,5 +612,11 @@ namespace Nop.Core.Domain.Catalog
             get => (RentalPricePeriod)RentalPricePeriodId;
             set => RentalPricePeriodId = (int)value;
         }
+        
+        /// <summary>
+        /// Gets or sets processed boolean value to true or false
+        /// </summary>
+        public bool Processed { get; set; }
+        
     }
 }
