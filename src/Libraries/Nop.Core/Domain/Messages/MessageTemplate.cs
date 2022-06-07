@@ -44,7 +44,7 @@ namespace Nop.Core.Domain.Messages
         public int? DelayBeforeSend { get; set; }
 
         /// <summary>
-        /// Gets or sets the period of message delay 
+        /// Gets or sets the period of message delay
         /// </summary>
         public int DelayPeriodId { get; set; }
 

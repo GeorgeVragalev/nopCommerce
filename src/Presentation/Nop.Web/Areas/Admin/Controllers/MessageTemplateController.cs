@@ -147,7 +147,7 @@ namespace Nop.Web.Areas.Admin.Controllers
             if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageMessageTemplates))
                 return await AccessDeniedDataTablesJson();
 
-            //prepare model
+            //prepare model 
             var model = await _messageTemplateModelFactory.PrepareMessageTemplateListModelAsync(searchModel);
 
             return Json(model);

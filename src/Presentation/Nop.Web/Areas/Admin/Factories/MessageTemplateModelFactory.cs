@@ -178,7 +178,7 @@ namespace Nop.Web.Areas.Admin.Factories
 
                     //prepare available email accounts
                     await _baseAdminModelFactory.PrepareEmailAccountsAsync(locale.AvailableEmailAccounts,
-                        defaultItemText: await _localizationService.GetResourceAsync("Admin.ContentManagement.MessageTemplates.Fields.EmailAccount.Standard"));
+                        defaultItemText: await _localizationService.GetResourceAsync("Admin.ContentManagement.MessageTemplates.Fields.EmailAccount.Standard")); 
 
                     //PrepareEmailAccounts only gets available accounts, we need to set the item as selected manually
                     if (locale.AvailableEmailAccounts?.FirstOrDefault(x => x.Value == locale.EmailAccountId.ToString()) is SelectListItem emailAccountListItem)
@@ -187,8 +187,11 @@ namespace Nop.Web.Areas.Admin.Factories
                     }
                 };
             }
-            
-            model.ReplyTo = "admin@YourStore.com"; 
+
+            if (messageTemplate?.ReplyTo!=null)
+            {
+                model.ReplyTo = messageTemplate.ReplyTo;
+            }
 
             model.SendImmediately = !model.DelayBeforeSend.HasValue;
             model.HasAttachedDownload = model.AttachedDownloadId > 0;
