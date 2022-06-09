@@ -4,9 +4,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Nop.Core;
+using Nop.Plugin.Product.Backup.Factory;
 using Nop.Plugin.Product.Backup.Models;
 using Nop.Services.Catalog;
+using Nop.Services.Configuration;
+using Nop.Services.Localization;
+using Nop.Services.Logging;
+using Nop.Services.Messages;
 using Nop.Services.Security;
+using Nop.Web.Areas.Admin.Infrastructure.Mapper.Extensions;
 using Nop.Web.Framework;
 using Nop.Web.Framework.Controllers;
 using Nop.Web.Framework.Mvc.Filters;
@@ -17,62 +24,79 @@ namespace Nop.Plugin.Product.Backup.Controllers;
 [AutoValidateAntiforgeryToken]
 [ValidateIpAddress]
 [AuthorizeAdmin]
-public class BackupController: BasePluginController
+public class BackupController : BasePluginController
 {
     private readonly IPermissionService _permissionService;
-    private readonly IProductService _productService;
+    private readonly IProductBackupFactory _productBackupFactory;
+    private readonly IStoreContext _storeContext;
+    private readonly ISettingService _settingService;
+    private readonly ICustomerActivityService _customerActivityService;
+    private readonly ILocalizationService _localizationService;
+    private readonly INotificationService _notificationService;
 
-    public BackupController(IPermissionService permissionService, IProductService productService)
+    public BackupController(IPermissionService permissionService,
+        IProductBackupFactory productBackupFactory, IStoreContext storeContext, ISettingService settingService,
+        ICustomerActivityService customerActivityService, ILocalizationService localizationService,
+        INotificationService notificationService)
     {
         _permissionService = permissionService;
-        _productService = productService;
+        _productBackupFactory = productBackupFactory;
+        _storeContext = storeContext;
+        _settingService = settingService;
+        _customerActivityService = customerActivityService;
+        _localizationService = localizationService;
+        _notificationService = notificationService;
     }
+
     [AuthorizeAdmin]
     [Area(AreaNames.Admin)]
     public virtual async Task<IActionResult> Configure()
     {
         if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageSettings))
             return AccessDeniedView();
-        
+
         //prepare model
-        var models = await _productService.GetFiveUnexportedProductsAsync();
-        var modelList = new List<ProductModel>();
-
-        foreach (var model in models)
-        {
-            var mappedModel = new ProductModel
-            {
-                ProductTypeId = model.ProductTypeId,
-                Name = model.Name,
-                ShortDescription = model.ShortDescription,
-                FullDescription = model.ShortDescription,
-                Sku = model.Sku,
-                StockQuantity = model.StockQuantity,
-                OldPrice = model.OldPrice,
-                Price = model.Price,
-                Processed = model.Processed,
-                CreatedOnUtc = model.CreatedOnUtc,
-                UpdatedOnUtc = model.UpdatedOnUtc,
-            };
-            modelList.Add(mappedModel);
-            
-            System.IO.File.WriteAllText(@"C:\Users\vraga\Desktop\NopCommerce\Files\product"+model.Id+".json", JsonConvert.SerializeObject(mappedModel));
-
-            await using var file = System.IO.File.CreateText(@"C:\Users\vraga\Desktop\NopCommerce\Files\product"+model.Id+".json");
-            var serializer = new JsonSerializer();
-            serializer.Serialize(file, mappedModel);
-        }
-
-        return View("~/Plugins/Product.Backup/Views/Configure.cshtml", modelList);
+        var model = await _productBackupFactory.PrepareProductBackupSettingsModelAsync();
+        
+        //check if return value is null
+        
+        return View("~/Plugins/Product.Backup/Views/Configure.cshtml", model);
     }
 
-    public virtual async Task<IActionResult> CreateJsonFileAsync()
+    [HttpPost]
+    public virtual async Task<IActionResult> Configure(ProductBackupSettingsModel model)
     {
+        if (!await _permissionService.AuthorizeAsync(StandardPermissionProvider.ManageSettings))
+            return AccessDeniedView();
 
-        
-        
-        return null;
+        if (!ModelState.IsValid) return await Configure();
+
+        //load settings for a chosen store scope
+        var storeScope = await _storeContext.GetActiveStoreScopeConfigurationAsync();
+        var productBackupSettings = await _settingService.LoadSettingAsync<ProductBackupSettings>(storeScope);
+        productBackupSettings = model.ToSettings(productBackupSettings);
+
+        //and loaded from database after each update
+        await _settingService.SaveSettingOverridablePerStoreAsync(productBackupSettings, x => x.BackupConfigurationEnabled,
+            model.BackupConfigurationEnabled_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(productBackupSettings, x => x.ProcessingProductsNumber,
+            model.ProcessingProductsNumber_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(productBackupSettings, x => x.ProductBackupTimer,
+            model.ProductBackupTimer_OverrideForStore, storeScope, false);
+        await _settingService.SaveSettingOverridablePerStoreAsync(productBackupSettings, x => x.ProductBackupStoragePath,
+            model.ProductBackupStoragePath_OverrideForStore, storeScope, false);
+
+        //now clear settings cache
+        await _settingService.ClearCacheAsync();
+
+        //activity log
+        await _customerActivityService.InsertActivityAsync("EditSettings",
+            await _localizationService.GetResourceAsync("ActivityLog.EditSettings"));
+
+        _notificationService.SuccessNotification(
+            await _localizationService.GetResourceAsync("Admin.Configuration.Updated"));
+
+        //if we got this far, something failed, redisplay form
+        return await Configure();
     }
- 
-    
 }
