@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Nop.Core;
-using Nop.Data;
 using Nop.Plugin.Product.Backup.Models;
 using Nop.Plugin.Product.Backup.Services;
 using Nop.Services.Configuration;
+using Nop.Services.Media;
 using Nop.Web.Areas.Admin.Infrastructure.Mapper.Extensions;
 
 namespace Nop.Plugin.Product.Backup.Factory;
@@ -16,15 +16,16 @@ public class ProductBackupFactory : IProductBackupFactory
     private readonly IStoreContext _storeContext;
     private readonly ISettingService _settingService;
     private readonly IProductService _productService;
+    private readonly IPictureService _pictureService;
 
     public ProductBackupFactory(IStoreContext storeContext, ISettingService settingService,
-        ProductBackupSettings productBackupSettings, IProductService productService,
-        IRepository<Core.Domain.Catalog.Product> productRepository)
+        ProductBackupSettings productBackupSettings, IProductService productService, IPictureService pictureService)
     {
         _storeContext = storeContext;
         _settingService = settingService;
         _productBackupSettings = productBackupSettings;
         _productService = productService;
+        _pictureService = pictureService;
     }
 
     public async Task<ProductBackupSettingsModel> PrepareProductBackupSettingsModelAsync(
@@ -94,6 +95,41 @@ public class ProductBackupFactory : IProductBackupFactory
             return modelList;
         }
         return null;
+    }
+    
+    public async Task<List<PictureModel>> PrepareImageModel()
+    {
+        var pictureModelList = new List<PictureModel>();
+        var pictureUrlsList = new List<string>();
+
+        var productModelsList = await _productService.GetFiveUnexportedProductsAsync();
+
+        foreach (var product in productModelsList)
+        {
+            var pictures = await _pictureService.GetPicturesByProductIdAsync(product.Id);
+
+            pictureUrlsList.Clear();
+            foreach (var picture in pictures)
+            {
+                var pictureUrl = await _pictureService.GetPictureUrlAsync(picture);
+                pictureUrlsList.Add(pictureUrl.Url);
+                var pictureModel = new PictureModel()
+                {
+                    AltAttribute = picture.AltAttribute,
+                    IsNew = picture.IsNew,
+                    MimeType = picture.MimeType,
+                    SeoFilename = picture.SeoFilename,
+                    TitleAttribute = picture.TitleAttribute,
+                    VirtualPath = picture.VirtualPath,
+                    UrlsString = pictureUrlsList
+                };
+                //todo export jpeg to local
+                
+                pictureModelList.Add(pictureModel);
+            }
+        }
+
+        return pictureModelList;
     }
 }
 
