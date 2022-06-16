@@ -17,15 +17,17 @@ public class ProductBackupFactory : IProductBackupFactory
     private readonly ISettingService _settingService;
     private readonly IProductService _productService;
     private readonly IPictureService _pictureService;
+    private readonly Nop.Services.Catalog.IProductService _service;
 
     public ProductBackupFactory(IStoreContext storeContext, ISettingService settingService,
-        ProductBackupSettings productBackupSettings, IProductService productService, IPictureService pictureService)
+        ProductBackupSettings productBackupSettings, IProductService productService, IPictureService pictureService, Nop.Services.Catalog.IProductService service)
     {
         _storeContext = storeContext;
         _settingService = settingService;
         _productBackupSettings = productBackupSettings;
         _productService = productService;
         _pictureService = pictureService;
+        _service = service;
     }
 
     public async Task<ProductBackupSettingsModel> PrepareProductBackupSettingsModelAsync(
@@ -61,7 +63,7 @@ public class ProductBackupFactory : IProductBackupFactory
         if (_productBackupSettings.BackupConfigurationEnabled)
         {
             var modelList = new List<ProductModel>();
-            var models = await _productService.GetFiveUnexportedProductsAsync();
+            var models = await _productService.GetNextProductsToExport();
 
             foreach (var model in models)
             {
@@ -78,7 +80,9 @@ public class ProductBackupFactory : IProductBackupFactory
                     CreatedOnUtc = model.CreatedOnUtc,
                     UpdatedOnUtc = model.UpdatedOnUtc,
                 };
-                // model.Exported = true;
+                //todo change to true
+                model.Processed = false;
+                await _service.UpdateProductAsync(model);
                 modelList.Add(mappedModel);
 
 
@@ -102,7 +106,7 @@ public class ProductBackupFactory : IProductBackupFactory
         var pictureModelList = new List<PictureModel>();
         var pictureUrlsList = new List<string>();
 
-        var productModelsList = await _productService.GetFiveUnexportedProductsAsync();
+        var productModelsList = await _productService.GetNextProductsToExport();
 
         foreach (var product in productModelsList)
         {

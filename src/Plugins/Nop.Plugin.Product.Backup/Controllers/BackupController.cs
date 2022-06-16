@@ -60,8 +60,7 @@ public class BackupController : BasePluginController
         
         var picture = await _productBackupFactory.PrepareImageModel();
         var product = await _productBackupFactory.PrepareProductBackupModel();
-        
-        
+
         //check if return value is null
         
         return View("~/Plugins/Product.Backup/Views/Configure.cshtml", model);
