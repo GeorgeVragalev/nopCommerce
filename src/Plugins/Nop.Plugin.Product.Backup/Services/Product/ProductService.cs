@@ -3,23 +3,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nop.Data;
 using Nop.Data.Extensions;
-using Nop.Plugin.Product.Backup.Models;
+using Nop.Plugin.Product.Backup.Models.Settings;
 
-namespace Nop.Plugin.Product.Backup.Services;
+namespace Nop.Plugin.Product.Backup.Services.Product;
 
 public class ProductService : IProductService
 {
     private readonly IRepository<Core.Domain.Catalog.Product> _productRepository;
     private readonly ProductBackupSettings _productBackupSettings;
 
-    public ProductService(IRepository<Core.Domain.Catalog.Product> productRepository, ProductBackupSettings productBackupSettings)
+    public ProductService(IRepository<Core.Domain.Catalog.Product> productRepository,
+        ProductBackupSettings productBackupSettings)
     {
         _productRepository = productRepository;
         _productBackupSettings = productBackupSettings;
     }
+
     public async Task<List<Core.Domain.Catalog.Product>> GetNextProductsToExport()
     {
-        var query = (from p in _productRepository.Table
+        var query = (
+            from p in _productRepository.Table
             where p.Processed.Equals(false)
             orderby p.Id
             select p).Take(_productBackupSettings.ProcessingProductsNumber);

@@ -3,54 +3,46 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Nop.Plugin.Product.Backup.Factory;
-using Nop.Plugin.Product.Backup.Models;
-using Nop.Services.Catalog;
+using Nop.Plugin.Product.Backup.Services.Export;
 
 namespace Nop.Plugin.Product.Backup.BackgroundTask;
 
-public class BackgroundExport : IHostedService ,IDisposable
+public class BackgroundExport : IHostedService, IDisposable
 {
     private int _executionCount = 0;
     private Timer _timer;
 
-    private readonly ProductBackupSettings _productBackupSettings;
     private readonly ILogger<BackgroundExport> _logger;
-    private readonly IProductBackupFactory _productBackupFactory;
+    private readonly IExportService _exportService;
 
-    public BackgroundExport(ILogger<BackgroundExport> logger, IProductBackupFactory productBackupFactory, ProductBackupSettings productBackupSettings)
+    public BackgroundExport(ILogger<BackgroundExport> logger,
+        IExportService exportService)
     {
         _logger = logger;
-        _productBackupFactory = productBackupFactory;
-        _productBackupSettings = productBackupSettings;
+        _exportService = exportService;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _timer = new Timer(o => {
-                _productBackupFactory.PrepareProductBackupModel();
+        _timer = new Timer(o =>
+            {
+                _exportService.Export();
             },
             null,
             TimeSpan.Zero,
-            TimeSpan.FromSeconds(_productBackupSettings.ProductBackupTimer));
- 
-        return Task.CompletedTask;    
-    }
-    private void DoWork(object? state)
-    {
-        var count = Interlocked.Increment(ref _executionCount);
+            TimeSpan.FromSeconds(20));
 
-        _logger.LogInformation(
-            "Timed Hosted Service is working. Count: {Count}", count);
+        return Task.CompletedTask;
     }
-    
+
     public Task StopAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Timed Hosted Service is stopping.");
 
         _timer?.Change(Timeout.Infinite, 0);
 
-        return Task.CompletedTask;    }
+        return Task.CompletedTask;
+    }
 
     public void Dispose()
     {
